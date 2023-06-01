@@ -10,7 +10,7 @@ const PayButton = ({ cartItems, shippingPrice, shippingTitle }) => {
     if (process.env.NODE_ENV === "development") {
       toast.info("Please Wait While We Load Stripe Checkout For You!");
       axios
-        .post("http://localhost:3000/api/stripe/create-checkout-session", {
+        .post("http://localhost:2200/api/stripe/create-checkout-session", {
           cartItems,
           userId: userInfo._id,
           email: userInfo.email,

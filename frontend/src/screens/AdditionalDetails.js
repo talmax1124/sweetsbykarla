@@ -171,7 +171,7 @@ const AdditionalDetails = ({ match, location, history }) => {
     } else if (process.env.NODE_ENV === "development") {
       toast.success("Redirecting to Shipping Selection");
       const response = await fetch(
-        `http://localhost:7500/api/rates/liverates`,
+        `http://localhost:2350/api/rates/liverates`,
         {
           method: "POST",
           headers: {

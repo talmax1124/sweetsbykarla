@@ -16,6 +16,10 @@ main {
   min-height: 80vh;
 }
 
+.large-nav-logo {
+  width: 6%;
+}
+
 .order-item-lg {
   display: block;
 }
@@ -106,15 +110,6 @@ main {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   transition: all 0.3s ease;
-}
-
-.hero-div {
-  background: rgb(16, 24, 39);
-  background: linear-gradient(
-    180deg,
-    rgba(16, 24, 39, 1) 32%,
-    rgb(42, 63, 92) 100%
-  );
 }
 
 .service:hover {
@@ -645,14 +640,22 @@ main {
   }
 }
 
-.Hero {
+// Hero Section
+.hero {
+  background-image: url("https://i.ibb.co/w6PFNGW/Untitled-design-21.png");
   display: flex;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
-  text-align: left;
-  margin: 1em 0;
+  align-items: center;
+  height: 50vh;
+  border-radius: 0 0 4em 4em;
+  h1 {
+    color: white;
+    font-size: 2em;
+  }
 }
 
 @media (max-width: 1000px) {

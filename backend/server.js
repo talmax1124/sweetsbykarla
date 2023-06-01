@@ -91,7 +91,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 7500;
+const PORT = process.env.PORT || 2350;
 
 app.listen(
   PORT,

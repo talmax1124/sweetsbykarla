@@ -35,7 +35,7 @@ const LoginScreen = ({ location, history }) => {
     e.preventDefault();
     const googleSignInEndPoint =
       process.env.NODE_ENV === "development"
-        ? `http://localhost:7500/api/auth/google?redirect=${redirect}`
+        ? `http://localhost:2350/api/auth/google?redirect=${redirect}`
         : `/api/auth/google?redirect=${redirect}`;
     window.location.href = googleSignInEndPoint;
   };

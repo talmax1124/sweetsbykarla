@@ -121,7 +121,7 @@ export const saveShippingAddress = (data) => async (dispatch) => {
   };
   // Add the process env to the fetch url
   if (process.env.NODE_ENV === "development") {
-    const response = await fetch(`http://localhost:7500/api/rates/liverates `, {
+    const response = await fetch(`http://localhost:2350/api/rates/liverates `, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { React, useState, Fragment } from "react";
 import { Link, Route } from "react-router-dom";
@@ -40,45 +41,61 @@ const Header = () => {
     }
   });
 
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleNavbar = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <>
-      <header>
-        <Navbar
-          className="bg-gray-900"
-          variant="dark"
-          expand="lg"
-          collapseOnSelect
-        >
-          <Container>
-            <LinkContainer to="/">
-              <Navbar.Brand>CreativeDuoLLC</Navbar.Brand>
-            </LinkContainer>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <div className="search-small">
-                <Route
-                  render={({ history }) => (
-                    <SearchBox className="ml-auto mr-auto" history={history} />
-                  )}
-                />
-              </div>
-              <Nav className="ml-auto">
-                <LinkContainer to="/articles">
-                  <Nav.Link>Articles</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/products">
-                  <Nav.Link>Shop</Nav.Link>
-                </LinkContainer>
-                <Nav.Link onClick={openSearch} className="search-big">
-                  Search
-                </Nav.Link>
+      <Navbar
+        expand="lg"
+        expanded={expanded}
+        className="bg-gray-900"
+        variant="dark"
+        sticky="top"
+      >
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>Creative Duo LLC</Navbar.Brand>
+          </LinkContainer>
+          <Navbar.Toggle aria-controls="navbar-nav" onClick={toggleNavbar} />
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="mr-auto ml-auto">
+              <LinkContainer to="/">
+                <Nav.Link>Home</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/about">
+                <Nav.Link>About</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/products">
+                <Nav.Link>Products</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/articles">
+                <Nav.Link>Articles</Nav.Link>
+              </LinkContainer>
+            </Nav>
+            <Nav>
+              <div className="lg:flex justify-center items-center">
+                <button
+                  className="hidden relative z-10 lg:block h-8 w-8 rounded-full overflow-hidden border-2 border-gray-900 bg-white hover:border-gray-900 focus:outline-none focus:border-gray-900 hover:opacity-90 mr-2"
+                  onClick={() => setOpen(!open)}
+                >
+                  <i className="fas fa-search text-black"></i>
+                </button>
                 <LinkContainer to="/cart">
-                  <Nav.Link>
-                    <i className="fas fa-cart-shopping"></i> (
-                    {cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                  <Nav.Link className="px-3 py-2 bg-slate-700 rounded-md mr-2 text-white hover:bg-slate-800">
+                    <i className="fas fa-cart-shopping"></i>
+                    {cartItems.length > 0 ? (
+                      <span className="badge">
+                        {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                      </span>
+                    ) : (
+                      <span className="badge">Cart</span>
+                    )}
                   </Nav.Link>
                 </LinkContainer>
-
                 {userInfo ? (
                   <>
                     <div>
@@ -249,16 +266,32 @@ const Header = () => {
                     </div>
                   </>
                 ) : (
-                  <LinkContainer to="/login">
-                    <Nav.Link>
-                      <i className="fas fa-user"></i> Sign In
-                    </Nav.Link>
-                  </LinkContainer>
+                  <>
+                    <LinkContainer to="/login">
+                      <Nav.Link>
+                        <i className="fas fa-user"></i> Sign In
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/register">
+                      <Nav.Link>
+                        <i className="fas fa-user"></i> Register
+                      </Nav.Link>
+                    </LinkContainer>
+                  </>
                 )}
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+              </div>
+            </Nav>
+            <div className="search-small">
+              <Route
+                render={({ history }) => (
+                  <SearchBox className="ml-auto mr-auto" history={history} />
+                )}
+              />
+            </div>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <header>
         {/* Add the div to show and close to use the open */}
         {open ? (
           <div className="p-3 bg-gray-800 flex justify-center items-center flex-col">

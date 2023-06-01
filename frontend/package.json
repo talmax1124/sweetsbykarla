@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "proxy": "http://[::1]:7500/",
+  "proxy": "http://[::1]:2350/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -47,7 +47,7 @@
     "webpack": "^5.72.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=4706 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -69,6 +69,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
+    "daisyui": "^3.0.0",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.24"
   }
