@@ -48,7 +48,8 @@
     "webpack": "^5.72.0"
   },
   "scripts": {
-    "start": "PORT=4706 react-scripts start",
+    "start": "react-scripts start",
+    "switch-port": "PORT=4706",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
