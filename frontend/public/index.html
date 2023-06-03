@@ -114,7 +114,7 @@
     <script>
       window.__ow = window.__ow || {};
       window.__ow.organizationId = "b006ea06-ad18-4f45-909f-5fc99f0f5740";
-      (function (n, t, c) {
+      (function(n, t, c) {
         function i(n) {
           return e._h ? e._h.apply(null, n) : e._q.push(n);
         }
@@ -122,26 +122,26 @@
           _q: [],
           _h: null,
           _v: "2.0",
-          on: function () {
+          on: function() {
             i(["on", c.call(arguments)]);
           },
-          once: function () {
+          once: function() {
             i(["once", c.call(arguments)]);
           },
-          off: function () {
+          off: function() {
             i(["off", c.call(arguments)]);
           },
-          get: function () {
+          get: function() {
             if (!e._h)
               throw new Error(
                 "[OpenWidget] You can't use getters before load."
               );
             return i(["get", c.call(arguments)]);
           },
-          call: function () {
+          call: function() {
             i(["call", c.call(arguments)]);
           },
-          init: function () {
+          init: function() {
             var n = t.createElement("script");
             (n.async = !0),
               (n.type = "text/javascript"),
@@ -153,5 +153,10 @@
       })(window, document, [].slice);
     </script>
     <!-- End of OpenWidget code -->
+    <script
+      src="https://unpkg.com/@lottiefiles/jlottie@latest/dist/jlottie.min.js"
+      type="module"
+    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
   </body>
 </html>

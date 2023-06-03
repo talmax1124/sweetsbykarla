@@ -52,13 +52,13 @@ const Header = () => {
       <Navbar
         expand="lg"
         expanded={expanded}
-        className="bg-gray-900"
+        className="bg-[#5C363D]"
         variant="dark"
         sticky="top"
       >
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>Creative Duo LLC</Navbar.Brand>
+            <Navbar.Brand>Sweets By Karla</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="navbar-nav" onClick={toggleNavbar} />
           <Navbar.Collapse id="navbar-nav">
@@ -85,7 +85,7 @@ const Header = () => {
                   <i className="fas fa-search text-black"></i>
                 </button>
                 <LinkContainer to="/cart">
-                  <Nav.Link className="px-3 py-2 bg-slate-700 rounded-md mr-2 text-white hover:bg-slate-800">
+                  <Nav.Link className=" px-4 py-2  bg-[#512e35] rounded-md mr-2 text-white hover:bg-[#45252c] text-sm font-medium">
                     <i className="fas fa-cart-shopping"></i>
                     {cartItems.length > 0 ? (
                       <span className="badge">
@@ -104,7 +104,7 @@ const Header = () => {
                         className="relative inline-block text-left"
                       >
                         <div>
-                          <Menu.Button className="inline-flex w-full rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                          <Menu.Button className="inline-flex w-full rounded-md bg-[#F5F3E7] px-4 py-2 text-sm font-medium text-[#46101A] hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                             <span className="mr-2">
                               <i className="fas fa-user mr-1"></i>{" "}
                               {userInfo.name}
