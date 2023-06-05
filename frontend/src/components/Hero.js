@@ -27,7 +27,7 @@ const Hero = () => {
             <div>
               <Link
                 to="/products"
-                className="btn bg-[#7e4f55] text-white w-1/4 hover:bg-[#A06C74] rounded"
+                className="btn bg-[#7e4f55] text-white w-1/4 hover:bg-[#A06C74] rounded shop-button"
               >
                 <i className="fas fa-shopping-bag"></i> Shop Now
               </Link>

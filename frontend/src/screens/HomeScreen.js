@@ -7,6 +7,7 @@ import Meta from "../components/Meta";
 import { listProducts } from "../actions/productActions";
 import Hero from "../components/Hero";
 import TopProducts from "../components/TopProducts";
+import OurStory from "../components/OurStory";
 
 const HomeScreen = ({ match, history, location }) => {
   const keyword = match.params.keyword;
@@ -26,6 +27,7 @@ const HomeScreen = ({ match, history, location }) => {
       <main className="py-3">
         {!keyword && pageNumber === 1 ? (
           <>
+            <OurStory />
             <TopProducts />
           </>
         ) : (

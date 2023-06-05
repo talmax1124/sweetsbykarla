@@ -78,17 +78,33 @@ const TopProducts = ({ match, history }) => {
                     </span>
                   </Link>
                 </div>
-                <Button
-                  onClick={(e) => addToCartHandler(e, product._id)}
-                  disabled={product.countInStock === 0}
-                  style={{ borderRadius: "0 0 1em 1em" }}
-                  value={1}
-                  className="top-product-button w-full bg-slate-200 text-black font-medium hover:bg-slate-300 hover:text-black
+                {/* If product.countInStock === 0, then show out of stock else show reg button */}
+
+                {!product.countInStock ? (
+                  <Button
+                    onClick={(e) => addToCartHandler(e, product._id)}
+                    disabled={product.countInStock === 0}
+                    style={{ borderRadius: "0 0 1em 1em" }}
+                    value={1}
+                    className="top-product-button w-full bg-red-400 text-black font-medium hover:bg-red-300 hover:text-black
                   disabled:opacity-50 disabled:cursor-not-allowed"
-                  key={`${product._id}-button`}
-                >
-                  Add To Cart
-                </Button>
+                    key={`${product._id}-button`}
+                  >
+                    Out of Stock
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={(e) => addToCartHandler(e, product._id)}
+                    disabled={product.countInStock === 0}
+                    style={{ borderRadius: "0 0 1em 1em" }}
+                    value={1}
+                    className="top-product-button w-full bg-slate-200 text-black font-medium hover:bg-slate-300 hover:text-black
+                  disabled:opacity-50 disabled:cursor-not-allowed"
+                    key={`${product._id}-button`}
+                  >
+                    Add To Cart
+                  </Button>
+                )}
               </div>
             </React.Fragment>
           ))}
