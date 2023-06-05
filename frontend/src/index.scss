@@ -640,146 +640,56 @@ main {
   }
 }
 
-// Hero Section
-.hero {
-  background-color: #f3eaeb;
+// Alternative Hero Section
+.hero-alternative {
+  background-color: #f4eff0;
   display: flex;
   background-position: center center;
   background-repeat: no-repeat;
   justify-content: center;
   align-items: center;
 
-  .hero-intro {
-    width: 20%;
+  .hero-alternative-intro {
+    width: 70%;
+    margin-top: 1em;
+    text-align: left;
     padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     h1 {
-      font-size: 3em;
+      font-size: 4em;
+      margin-bottom: 0.01em;
     }
     p {
       color: rgb(113, 111, 111);
       font-size: 1.5em;
     }
+
+    .contact-button {
+      border: 1px solid #efbab2;
+      
+    }
+    .contact-button:hover {
+      border: 1px solid #e2aba2;
+      background-color: #e2aba2 ;
+      color: black;
+    }
   }
-  .product-info-carousel {
-    width: 80%;
-    display: flex;
-
-    .product-image-big {
-      background: url("https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/338273410_257076970009503_5826144095162488963_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_ohc=1M7610pD4VkAX99vzXP&_nc_ht=scontent-atl3-2.xx&oh=00_AfByNY8WNDfC79NmmPlVllnDoz2KvHy6lEl8wWtmvzKz0Q&oe=647D4517");
-      justify-content: flex-end;
-      background-size: cover;
-      background-position: center center;
-      width: 70%;
-      height: 700px;
-      img {
-        width: 100%;
-        margin-left: auto;
-      }
-    }
-    .product-step-carousel {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      .step-image {
-        background: url("https://media.istockphoto.com/id/485832764/photo/red-velvet-cake.jpg?s=612x612&w=0&k=20&c=nMyCKKBcLWRVn3s3GBc63yGst700YF98VjSTBXwuCx4=");
-        background-size: cover;
-        background-position: center top;
-        width: 100%;
-        height: 75%;
-      }
-      .step-control {
-        background-color: #4f252d;
-        height: 15%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        span {
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 50%;
-
-          .control-icon-1 {
-            background-color: #4f252d;
-            border: none;
-            padding: 0.5em 1em;
-            font-size: 1.2em;
-            font-weight: 500;
-            cursor: pointer;
-            height: 100%;
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease-in-out;
-            color: #f3eaeb;
-            &:hover {
-              background-color: #6e333e;
-              color: white;
-            }
-          }
-          .control-icon-2 {
-            background-color: #4f252d;
-            border: none;
-            padding: 0.5em 1em;
-            font-size: 1.2em;
-            font-weight: 500;
-            cursor: pointer;
-            height: 100%;
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease-in-out;
-            color: #f3eaeb;
-            &:hover {
-              background-color: #6e333e;
-              color: white;
-            }
-          }
-        }
-      }
-      .step-name {
-        text-align: center;
-        background-color: #f5e2e4;
-        width: 100%;
-        height: 30%;
-        display: flex;
-        flex-direction: column;
-        h1 {
-          font-size: 2em;
-          font-weight: bold;
-        }
-        p {
-          font-size: 1.2em;
-          font-weight: 500;
-        }
-        button {
-          background-color: #4f252d;
-          border: none;
-          padding: 0.5em 1em;
-          width: 100%;
-          font-size: 1.2em;
-          font-weight: 500;
-          cursor: pointer;
-          
-          transition: all 0.3s ease-in-out;
-          color: #f3eaeb;
-          &:hover {
-            background-color: #6e333e;
-            color: white;
-          }
-        }
-      }
-    }
+  .products-gif {
+    width: 40%;
+    justify-content: flex-end;
+    margin-top: auto;
   }
 }
 
+
+
 @media (max-width: 1000px) {
+  .hero-alternative{
+    flex-direction: column;
+  }
   .carousel-caption h2 {
     padding: 10px;
     font-size: 15px;
