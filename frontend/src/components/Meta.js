@@ -24,7 +24,8 @@ Meta.defaultProps = {
   title: "Sweets By Karla ",
   description: "Custom handmade sweets and treats",
   keywords: "sweets, treats, custom, handmade, desserts, cakes, cupcakes",
-  thumbnail: "https://res.cloudinary.com/dj",
+  thumbnail:
+    "https://i.ibb.co/ZWCDGDn/276994740-364035949063863-3355795617466728307-n.jpg",
 };
 
 export default Meta;

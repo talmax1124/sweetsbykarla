@@ -204,7 +204,7 @@ const verificationLink = asyncHandler(async (req, res) => {
     </div>
     <div className="footer">
       <p>If you have not signed up at Creative Duo, please ignore this email.</p>
-      <p>Sent by Creative Duo &#8226; <a href="https://creativeduo.net">creativeduo.net</a> </p>
+      <p>Sent by Creative Duo &#8226; <a href="https://sweetsbykarla.net">sweetsbykarla.net</a> </p>
     </div>
   </div>
 </body>

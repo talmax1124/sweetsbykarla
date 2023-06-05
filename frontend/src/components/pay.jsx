@@ -31,7 +31,7 @@ const PayButton = ({ cartItems, shippingPrice, shippingTitle }) => {
     if (process.env.NODE_ENV === "production") {
       toast.info("Please Wait While We Load Stripe Checkout For You!");
       axios
-        .post("https://creativeduo.net/api/stripe/create-checkout-session", {
+        .post("https://sweetsbykarla.net/api/stripe/create-checkout-session", {
           cartItems,
           userId: userInfo._id,
           email: userInfo.email,
