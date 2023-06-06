@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,9 +14,32 @@ main {
   min-height: 80vh;
 }
 
+.section-title {
+  font-family: "Pacifico", cursive;
+  font-weight: 700;
+  font-size: 3em;
+  margin-bottom: 0.5em;
+  letter-spacing: 0px;
+}
+
 .section-styling {
   padding: 1em;
   margin: 1em;
+}
+
+.offer-cards-container .card1 {
+  background-color: #f5e2e4;
+  padding: 1em;
+  margin-right: 1em;
+}
+.offer-cards-container .card2 {
+  background-color: #f5e2e4;
+  padding: 1em;
+}
+.offer-cards-container .card3 {
+  background-color: #f5e2e4;
+  padding: 1em;
+  margin-left: 1em;
 }
 
 .large-s-logo {
@@ -249,6 +273,47 @@ main {
 .product-info .stock-button span {
   padding: 0.15em 1em 0.15em 1em;
   color: black;
+}
+
+.main-container .row1 {
+  display: flex;
+}
+.main-container .row1 .cake-image {
+  width: 50%;
+}
+.main-container .row1 .cta1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  background-color: #f5f3e7;
+  width: 50%;
+}
+.main-container .row1 .cta1 h1 {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-size: 5em;
+}
+.main-container .row2 {
+  display: flex;
+}
+.main-container .row2 .cta2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f5e2e4;
+  width: 50%;
+  padding: 2em;
+}
+.main-container .row2 .cta2 h1 {
+  font-family: "Pacifico", cursive;
+  font-weight: 200;
+  font-size: 5em;
+}
+.main-container .row2 .cups-image {
+  width: 50%;
 }
 
 @media (max-width: 900px) {
@@ -631,7 +696,7 @@ main {
 }
 
 .story h1 {
-  font-family: "Bebas Neue", sans-serif;
+  font-family: "Pacifico", cursive;
   font-weight: 700;
   font-size: 3em;
   letter-spacing: 0px;
