@@ -279,7 +279,15 @@ main {
   display: flex;
 }
 .main-container .row1 .cake-image {
+  position: relative;
   width: 50%;
+}
+.main-container .row1 .cake-image svg {
+  fill: #f5e2e4;
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  width: 100%;
 }
 .main-container .row1 .cta1 {
   display: flex;
@@ -314,6 +322,12 @@ main {
 }
 .main-container .row2 .cups-image {
   width: 50%;
+  position: relative;
+}
+.main-container .row2 .cups-image svg {
+  fill: #f5f3e7;
+  position: absolute;
+  top: 0;
 }
 
 @media (max-width: 900px) {
@@ -702,7 +716,65 @@ main {
   letter-spacing: 0px;
 }
 
+@media (max-width: 600px) {
+  .carousel-caption {
+    font-size: 2px;
+  }
+}
 @media (max-width: 1000px) {
+  .main-container .row1 {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .main-container .row1 .cake-image {
+    width: 100%;
+  }
+  .main-container .row1 .cake-image svg {
+    fill: #f5f3e7;
+    top: -2px;
+    rotate: 180deg;
+  }
+  .main-container .row1 .cta1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2em;
+    background-color: #f5f3e7;
+    width: 100%;
+  }
+  .main-container .row1 .cta1 h1 {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-size: 5em;
+  }
+  .main-container .row2 {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .main-container .row2 .cta2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f5e2e4;
+    width: 100%;
+    padding: 2em;
+  }
+  .main-container .row2 .cta2 h1 {
+    font-family: "Pacifico", cursive;
+    font-weight: 200;
+    font-size: 5em;
+  }
+  .main-container .row2 .cups-image {
+    width: 100%;
+  }
+  .main-container .row2 .cups-image svg {
+    fill: #f5e2e4;
+    bottom: -2px;
+    rotate: 180deg;
+    top: auto;
+  }
   .hero-alternative {
     background-color: #f4eff0;
     flex-direction: column-reverse;
@@ -803,10 +875,5 @@ main {
   }
   .top-card {
     margin-top: 1em;
-  }
-}
-@media (max-width: 600px) {
-  .carousel-caption {
-    font-size: 2px;
   }
 }/*# sourceMappingURL=index.css.map */
