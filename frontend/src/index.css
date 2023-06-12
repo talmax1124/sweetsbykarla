@@ -27,21 +27,6 @@ main {
   margin: 1em;
 }
 
-.offer-cards-container .card1 {
-  background-color: #f5e2e4;
-  padding: 1em;
-  margin-right: 1em;
-}
-.offer-cards-container .card2 {
-  background-color: #f5e2e4;
-  padding: 1em;
-}
-.offer-cards-container .card3 {
-  background-color: #f5e2e4;
-  padding: 1em;
-  margin-left: 1em;
-}
-
 .large-s-logo {
   width: 6%;
 }
@@ -582,6 +567,22 @@ main {
 }
 
 @media (max-width: 1000px) {
+  .offer-cards-container .card1 {
+    background-color: #f5e2e4;
+    padding: 1em;
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+  .offer-cards-container .card2 {
+    background-color: #f5e2e4;
+    padding: 1em;
+  }
+  .offer-cards-container .card3 {
+    background-color: #f5e2e4;
+    padding: 1em;
+    margin-left: 0;
+    margin-top: 1em;
+  }
   .carousel-control-prev span {
     background-color: rgba(0, 0, 0, 0.562);
     padding: 12px;
@@ -733,6 +734,7 @@ main {
     fill: #f5f3e7;
     top: -2px;
     rotate: 180deg;
+    width: 100%;
   }
   .main-container .row1 .cta1 {
     display: flex;
@@ -771,9 +773,10 @@ main {
   }
   .main-container .row2 .cups-image svg {
     fill: #f5e2e4;
-    bottom: -2px;
+    bottom: -2epx;
     rotate: 180deg;
-    top: auto;
+    top: 60%;
+    width: 100%;
   }
   .hero-alternative {
     background-color: #f4eff0;

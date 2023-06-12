@@ -5,7 +5,7 @@ const WhatWeOffer = () => {
     <>
       <div className="section-styling">
         <h1 className="font-bold section-title">What We Offer</h1>
-        <div className="offer-cards-container flex">
+        <div className="offer-cards-container flex flex-col w-full lg:flex-row justify-center items-center">
           <div className="card1">
             <h2 className="font-bold text-2xl">Cakes</h2>
             <p className="font-medium mb-2 mt-2 text-xl">
