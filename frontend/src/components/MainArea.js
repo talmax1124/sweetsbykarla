@@ -50,10 +50,10 @@ const MainArea = () => {
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3514.1458307787166!2d-81.43776582406149!3d28.263594600738006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88dd8379041e160d%3A0x7c4914e438a73783!2sSweets%20by%20Karla%20Cakes%20and%20Supplies%20Store!5e0!3m2!1sen!2spr!4v1686092762734!5m2!1sen!2spr"
               width="100%"
               height="450"
-              allowfullscreen=""
+              allowFullScreen="none"
               loading="lazy"
               className="mb-3"
-              referrerpolicy="no-referrer-when-downgrade"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
             <div className="flex justify-center items-center mt-3 flex-col lg:flex-row w-full">
               <a href="">
@@ -87,8 +87,8 @@ const MainArea = () => {
                   y2="260.991"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#F5F3E7" />
-                  <stop offset="1" stop-color="#F5F3E7" />
+                  <stop stopColor="#F5F3E7" />
+                  <stop offset="1" stopColor="#F5F3E7" />
                 </linearGradient>
               </defs>
             </svg>
