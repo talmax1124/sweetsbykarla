@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node backend/server",
     "server": "nodemon backend/server",
-    "client": "npm start --prefix frontend",
+    "client": "npm run startdev --prefix frontend",
     "tailwindwatch": "npx tailwindcss -i /frontend/src/tailwind.css -c /frontend/tailwind.config.js -o site/style.css --watch --no-map",
     "buildtailwind": "npx tailwindcss -i /frontend/src/tailwind.css -c /frontend/tailwind.config.js -o site/style.css --minify --no-map",
     "dev": "concurrently  \"npm run client\" \"npm run server\" tailwindwatch",
