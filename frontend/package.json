@@ -45,12 +45,14 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "serve": "^14.2.0",
     "shippo": "^1.7.1",
     "ssl-express-www": "^3.0.8",
     "webpack": "^5.72.0"
   },
   "scripts": {
-    "start": "PORT=4706 && react-scripts start",
+    "dev": "PORT=4706 && react-scripts start",
+    "start": "serve build -s -n -L -p $PORT",
     "switch-port": "PORT=4706",
     "build": "react-scripts build",
     "test": "react-scripts test",
