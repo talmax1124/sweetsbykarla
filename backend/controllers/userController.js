@@ -73,7 +73,7 @@ const verificationLink = asyncHandler(async (req, res) => {
     subject: "Account Activation Link ~ creativeduo.net",
 
     html: `
- 
+
     <!DOCTYPE html>
 <html lang="en">
 <head>
