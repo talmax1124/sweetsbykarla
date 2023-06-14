@@ -31,13 +31,16 @@ const PayButton = ({ cartItems, shippingPrice, shippingTitle }) => {
     if (process.env.NODE_ENV === "production") {
       toast.info("Please Wait While We Load Stripe Checkout For You!");
       axios
-        .post("https://sweetsbykarla.net/api/stripe/create-checkout-session", {
-          cartItems,
-          userId: userInfo._id,
-          email: userInfo.email,
-          shippingPrice,
-          shippingTitle,
-        })
+        .post(
+          "https://backend.sweetsbykarla.net/api/stripe/create-checkout-session",
+          {
+            cartItems,
+            userId: userInfo._id,
+            email: userInfo.email,
+            shippingPrice,
+            shippingTitle,
+          }
+        )
         .then((response) => {
           if (response.data.url) {
             window.location.href = response.data.url;
