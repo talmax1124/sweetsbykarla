@@ -204,7 +204,7 @@ const verificationLink = asyncHandler(async (req, res) => {
     </div>
     <div className="footer">
       <p>If you have not signed up at Creative Duo, please ignore this email.</p>
-      <p>Sent by Creative Duo &#8226; <a href="https://sweetsbykarla.net">sweetsbykarla.net</a> </p>
+      <p>Sent by Sweets By Karla &#8226; <a href="https://sweetsbykarla.net">sweetsbykarla.net</a> </p>
     </div>
   </div>
 </body>
@@ -212,7 +212,7 @@ const verificationLink = asyncHandler(async (req, res) => {
     `,
   };
 
-  mailgun.messages().send(data, function (error, info) {
+  mailgun.messages().send(data, function(error, info) {
     if (error) {
       res.status(400);
       throw new Error(error);
@@ -237,7 +237,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET),
-      function (err, decoded) {
+      function(err, decoded) {
         if (err) {
           // console.log('JWT verify error')
           return res.status(401).json({
@@ -488,11 +488,11 @@ const forgotPassword = (req, res) => {
       `,
     };
 
-    return user.updateOne({ resetLink: token }, function (err, success) {
+    return user.updateOne({ resetLink: token }, function(err, success) {
       if (err) {
         return res.status(400).json({ error: "Reset password link error" });
       } else {
-        mg.messages().send(data, function (error, body) {
+        mg.messages().send(data, function(error, body) {
           if (error) {
             return res.json({ error: error.message });
           }
@@ -513,42 +513,34 @@ const forgotPassword = (req, res) => {
 const resetPassword = (req, res) => {
   const { resetLink, newPass } = req.body;
   if (resetLink) {
-    jwt.verify(
-      resetLink,
-      process.env.JWT_SECRET,
-      function (error, decodedData) {
-        if (error) {
+    jwt.verify(resetLink, process.env.JWT_SECRET, function(error, decodedData) {
+      if (error) {
+        return res.status(401).json({ message: "Token incorrect or expired" });
+      }
+      User.findOne({ resetLink }, function(err, user) {
+        if (err || !user) {
           return res
-            .status(401)
+            .status(400)
             .json({ message: "Token incorrect or expired" });
         }
-        User.findOne({ resetLink }, function (err, user) {
-          if (err || !user) {
+        const obj = {
+          password: newPass,
+          resetLink: "",
+        };
+
+        user = Object.assign(user, obj);
+
+        user.save((err, result) => {
+          if (err) {
             return res
-              .status(400)
-              .json({ message: "Token incorrect or expired" });
+              .status(401)
+              .json({ error: "Token incorrect or expired" });
+          } else {
+            res.status(200).json({ message: "Your password has been changed" });
           }
-          const obj = {
-            password: newPass,
-            resetLink: "",
-          };
-
-          user = Object.assign(user, obj);
-
-          user.save((err, result) => {
-            if (err) {
-              return res
-                .status(401)
-                .json({ error: "Token incorrect or expired" });
-            } else {
-              res
-                .status(200)
-                .json({ message: "Your password has been changed" });
-            }
-          });
         });
-      }
-    );
+      });
+    });
   } else {
     return res.status(401).json({ error: "Authentication Error" });
   }

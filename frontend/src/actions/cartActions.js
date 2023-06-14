@@ -141,7 +141,7 @@ export const saveShippingAddress = (data) => async (dispatch) => {
 
   if (process.env.NODE_ENV === "production") {
     const response = await fetch(
-      `https://sweetsbykarla.net/api/rates/liverates `,
+      `https://backend.sweetsbykarla.net/api/rates/liverates `,
       {
         method: "POST",
         headers: {
