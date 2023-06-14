@@ -81,7 +81,13 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
   );
+
+  // 404 error handler for backend requests
+  app.use((req, res, next) => {
+    res.status(404).send("Not Found");
+  });
 } else {
+  // Development mode
   app.get("/", (req, res) => {
     res.send("API is running....");
     console.log("API is running....");
