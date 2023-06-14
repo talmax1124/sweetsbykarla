@@ -11,23 +11,23 @@ import generateToken from "../utils/generateToken.js";
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const cookies = new Cookies(req, res);
-  const {email, password} = req.body;
+  const { email, password } = req.body;
 
-  const user = await User.findOne({email});
+  const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
     cookies.set("id", String(user._id), {
-      maxAge : 1000 * 60 * 60 * 6,
-      sameSite : "strict",
+      maxAge: 1000 * 60 * 60 * 6,
+      sameSite: "strict",
     });
     res.json({
-      _id : user._id,
-      name : user.name,
-      email : user.email,
-      phone : user.phone,
-      isAdmin : user.isAdmin,
-      profileImage : user.profileImage,
-      token : generateToken(user._id),
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      isAdmin: user.isAdmin,
+      profileImage: user.profileImage,
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
@@ -36,9 +36,9 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 const verificationLink = asyncHandler(async (req, res) => {
-  let {name, email, password, phone} = req.body;
+  let { name, email, password, phone } = req.body;
   // console.log(req.body)
-  const userExists = await User.findOne({email});
+  const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
     throw new Error("Email is already registered");
@@ -57,19 +57,22 @@ const verificationLink = asyncHandler(async (req, res) => {
     throw new Error("Password length must be greater than 5");
   }
 
-  const tokengenerate = jwt.sign({name, email, password, phone},
-                                 process.env.JWT_SECRET, {expiresIn : "15m"});
+  const tokengenerate = jwt.sign(
+    { name, email, password, phone },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" }
+  );
   // send email to regitering user
   var mailgun = new Mailgun({
-    apiKey : process.env.MailGunAPI,
-    domain : process.env.MailGunDomain,
+    apiKey: process.env.MailGunAPI,
+    domain: process.env.MailGunDomain,
   });
   var data = {
-    from : "Creative Duo Shopping <creativeduo2020@gmail.com>",
-    to : email,
-    subject : "Account Activation Link ~ creativeduo.net",
+    from: "Creative Duo Shopping <creativeduo2020@gmail.com>",
+    to: email,
+    subject: "Account Activation Link ~ creativeduo.net",
 
-    html : `
+    html: `
  
     <!DOCTYPE html>
 <html lang="en">
@@ -195,11 +198,9 @@ const verificationLink = asyncHandler(async (req, res) => {
         <img src="https://i.ibb.co/1J6y513/undraw-festivities-tvvj-transparent.png" alt="undraw-festivities-tvvj-transparent" border="0">
         <h2>You're nearly there!</h2>
         <p className="text-main">We just need to verify your email address to complete setting up your account.</p>
-        <a href="${process.env.CLIENT_URL}/verify/${
-        tokengenerate}" className="button">Verify Email</a>
+        <a href="${process.env.CLIENT_URL}/verify/${tokengenerate}" className="button">Verify Email</a>
         <p className="sub-text">Or paste this link into your browser:</p>
-        <p className="long-link">${process.env.CLIENT_URL}/verify/${
-        tokengenerate}</p>
+        <p className="long-link">${process.env.CLIENT_URL}/verify/${tokengenerate}</p>
       </div>
     </div>
     <div className="footer">
@@ -212,15 +213,15 @@ const verificationLink = asyncHandler(async (req, res) => {
     `,
   };
 
-  mailgun.messages().send(data, function(error, info) {
+  mailgun.messages().send(data, function (error, info) {
     if (error) {
       res.status(400);
       throw new Error(error);
     } else {
       // console.log('Email sent: ' + info.response)
       res.status(201).json({
-        response :
-            "A verification email has been sent with a link to finish registration and verification. If you do not see the email in your inbox, it may be in the spam folder. This email may take about a minute to arrive. Look for the email from creativeduoshop.live or creativeduo2020@gmail.com",
+        response:
+          "A verification email has been sent with a link to finish registration and verification. If you do not see the email in your inbox, it may be in the spam folder. This email may take about a minute to arrive. Look for the email from creativeduoshop.live or creativeduo2020@gmail.com",
       });
     }
   });
@@ -231,19 +232,20 @@ const verificationLink = asyncHandler(async (req, res) => {
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   // const cookies = new Cookies(req, res);
-  const {token} = req.body;
-  const {name, email, password, phone, profileImage} = jwt.decode(token);
-  const userExists = await User.findOne({email});
+  const { token } = req.body;
+  const { name, email, password, phone, profileImage } = jwt.decode(token);
+  const userExists = await User.findOne({ email });
 
   if (token) {
-    jwt.verify(token, process.env.JWT_SECRET), function(err, decoded) {
-      if (err) {
-        // console.log('JWT verify error')
-        return res.status(401).json({
-          error : "Expired Link. Signup Again",
-        });
-      }
-    };
+    jwt.verify(token, process.env.JWT_SECRET),
+      function (err, decoded) {
+        if (err) {
+          // console.log('JWT verify error')
+          return res.status(401).json({
+            error: "Expired Link. Signup Again",
+          });
+        }
+      };
 
     if (userExists) {
       res.status(400);
@@ -260,13 +262,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
       res.status(201).json({
-        _id : user._id,
-        name : user.name,
-        email : user.email,
-        isAdmin : user.isAdmin,
-        phone : user.phone,
-        profileImage : user.profileImage,
-        token : generateToken(user._id),
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        phone: user.phone,
+        profileImage: user.profileImage,
+        token: generateToken(user._id),
       });
     } else {
       res.status(400);
@@ -282,11 +284,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     const response = {
-      _id : user._id,
-      name : user.name,
-      email : user.email,
-      phone : user.phone,
-      profileImage : user.profileImage,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      profileImage: user.profileImage,
     };
 
     if (user.googleId) {
@@ -335,13 +337,13 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     const response = {
-      _id : updatedUser._id,
-      name : updatedUser.name,
-      email : updatedUser.email,
-      isAdmin : updatedUser.isAdmin,
-      phone : updatedUser.phone,
-      profileImage : updatedUser.profileImage,
-      token : generateToken(updatedUser._id),
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      phone: updatedUser.phone,
+      profileImage: updatedUser.profileImage,
+      token: generateToken(updatedUser._id),
     };
 
     if (updatedUser.googleId) {
@@ -359,7 +361,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).sort([ [ "createdAt", -1 ] ]);
+  const users = await User.find({}).sort([["createdAt", -1]]);
   res.json(users);
 });
 
@@ -369,14 +371,14 @@ const getUsers = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
-  const admins = await User.find({isAdmin : true});
+  const admins = await User.find({ isAdmin: true });
   if (admins.length === 0) {
     throw Error("admin user can't be deleted");
   }
 
   if (user) {
     await user.remove();
-    res.json({message : "User has been removed from the database"});
+    res.json({ message: "User has been removed from the database" });
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -398,24 +400,25 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 const forgotPassword = (req, res) => {
-  const {email} = req.body;
+  const { email } = req.body;
   var mg = new Mailgun({
-    apiKey : process.env.MailGunAPI,
-    domain : process.env.MailGunDomain,
+    apiKey: process.env.MailGunAPI,
+    domain: process.env.MailGunDomain,
   });
 
-  User.findOne({email}, (err, user) => {
+  User.findOne({ email }, (err, user) => {
     if (err || !user) {
-      return res.status(400).json(
-          {message : "User with this email does not exist"});
+      return res
+        .status(400)
+        .json({ message: "User with this email does not exist" });
     }
 
     const token = generateToken(user._id);
     const data = {
-      from : "Creative Duo Shopping <creativeduo2020@gmail.com>",
-      to : email,
-      subject : "Reset Your Password",
-      html : `
+      from: "Creative Duo Shopping <creativeduo2020@gmail.com>",
+      to: email,
+      subject: "Reset Your Password",
+      html: `
       <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
     <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
         style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
@@ -454,8 +457,7 @@ const forgotPassword = (req, res) => {
                                             password has been generated for you. To reset your password, click the
                                             following link and follow the instructions.
                                         </p>
-                                        <a href="${
-          process.env.CLIENT_URL}/reset-password/${token}"
+                                        <a href="${process.env.CLIENT_URL}/reset-password/${token}"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
                                             Password</a>
                                     </td>
@@ -486,17 +488,17 @@ const forgotPassword = (req, res) => {
       `,
     };
 
-    return user.updateOne({resetLink : token}, function(err, success) {
+    return user.updateOne({ resetLink: token }, function (err, success) {
       if (err) {
-        return res.status(400).json({error : "Reset password link error"});
+        return res.status(400).json({ error: "Reset password link error" });
       } else {
-        mg.messages().send(data, function(error, body) {
+        mg.messages().send(data, function (error, body) {
           if (error) {
-            return res.json({error : error.message});
+            return res.json({ error: error.message });
           }
           return res.json({
-            message :
-                "Email Has Been Sent To Email You Have Inputted Below. If this email exists, you should recieve an email in about 30 seconds. If you haven't recieved an email, please visit the spam folder or wait a couple minutes more. If this still doesn't work, please click the submit button once again.",
+            message:
+              "Email Has Been Sent To Email You Have Inputted Below. If this email exists, you should recieve an email in about 30 seconds. If you haven't recieved an email, please visit the spam folder or wait a couple minutes more. If this still doesn't work, please click the submit button once again.",
           });
         });
       }
@@ -509,34 +511,46 @@ const forgotPassword = (req, res) => {
 //@access Public
 
 const resetPassword = (req, res) => {
-  const {resetLink, newPass} = req.body;
+  const { resetLink, newPass } = req.body;
   if (resetLink) {
-    jwt.verify(resetLink, process.env.JWT_SECRET, function(error, decodedData) {
-      if (error) {
-        return res.status(401).json({message : "Token incorrect or expired"});
-      }
-      User.findOne({resetLink}, function(err, user) {
-        if (err || !user) {
-          return res.status(400).json({message : "Token incorrect or expired"});
+    jwt.verify(
+      resetLink,
+      process.env.JWT_SECRET,
+      function (error, decodedData) {
+        if (error) {
+          return res
+            .status(401)
+            .json({ message: "Token incorrect or expired" });
         }
-        const obj = {
-          password : newPass,
-          resetLink : "",
-        };
-
-        user = Object.assign(user, obj);
-
-        user.save((err, result) => {
-          if (err) {
-            return res.status(401).json({error : "Token incorrect or expired"});
-          } else {
-            res.status(200).json({message : "Your password has been changed"});
+        User.findOne({ resetLink }, function (err, user) {
+          if (err || !user) {
+            return res
+              .status(400)
+              .json({ message: "Token incorrect or expired" });
           }
+          const obj = {
+            password: newPass,
+            resetLink: "",
+          };
+
+          user = Object.assign(user, obj);
+
+          user.save((err, result) => {
+            if (err) {
+              return res
+                .status(401)
+                .json({ error: "Token incorrect or expired" });
+            } else {
+              res
+                .status(200)
+                .json({ message: "Your password has been changed" });
+            }
+          });
         });
-      });
-    });
+      }
+    );
   } else {
-    return res.status(401).json({error : "Authentication Error"});
+    return res.status(401).json({ error: "Authentication Error" });
   }
 };
 
@@ -556,12 +570,12 @@ const updateUser = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     const response = {
-      _id : updatedUser._id,
-      name : updatedUser.name,
-      email : updatedUser.email,
-      phone : updatedUser.phone,
-      isAdmin : updatedUser.isAdmin,
-      profileImage : updatedUser.profileImage,
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      isAdmin: updatedUser.isAdmin,
+      profileImage: updatedUser.profileImage,
     };
 
     if (updatedUser.googleId) {

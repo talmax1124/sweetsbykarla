@@ -54,7 +54,7 @@ const PayButton = ({ cartItems, shippingPrice, shippingTitle }) => {
     <>
       <button
         onClick={() => handleCheckout()}
-        className="btn bg-black w-full text-white hover:bg-gray-700"
+        className="btn w-full bg-black text-white hover:bg-gray-700"
       >
         Check out
       </button>
