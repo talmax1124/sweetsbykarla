@@ -10,24 +10,52 @@ import {
 } from "../constants/cartConstants";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_BACKEND_URI}/api/products/${id}`
-  );
+  if (process.env.NODE_ENV === "development") {
+    const { data } = await axios.get(
+      `http://localhost:2350/api/products/${id}`
+    );
 
-  dispatch({
-    type: CART_ADD_ITEM,
-    payload: {
-      product: data._id,
-      name: data.name,
-      image: data.image,
-      price: data.price,
-      countInStock: data.countInStock,
-      qty,
-      digitalLink: data.digitalLink,
-    },
-  });
+    dispatch({
+      type: CART_ADD_ITEM,
+      payload: {
+        product: data._id,
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        countInStock: data.countInStock,
+        qty,
+        digitalLink: data.digitalLink,
+      },
+    });
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  }
+  if (process.env.NODE_ENV === "production") {
+    const { data } = await axios.get(
+      `https://backend.sweetsbykarla.net/api/products/${id}`
+    );
+
+    dispatch({
+      type: CART_ADD_ITEM,
+      payload: {
+        product: data._id,
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        countInStock: data.countInStock,
+        qty,
+        digitalLink: data.digitalLink,
+      },
+    });
+
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  }
 };
 
 export const saveShippingCost = (cost) => async (dispatch) => {

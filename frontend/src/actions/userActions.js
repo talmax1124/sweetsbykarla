@@ -41,17 +41,16 @@ import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 
 export const login = (email, password, phone) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
-    });
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_LOGIN_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
       const { data } = await axios.post(
         "/api/users/login",
         { email, password, phone },
@@ -67,6 +66,15 @@ export const login = (email, password, phone) => async (dispatch) => {
     }
 
     if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_LOGIN_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
       const { data } = await axios.post(
         "https://backend.sweetsbykarla.net/api/users/login",
         { email, password, phone },
@@ -99,7 +107,12 @@ export const logout = () => {
       } = getState();
 
       if (userInfo.googleId) {
-        await axios.get("/api/auth/logout");
+        if (process.env.NODE_ENV === "development") {
+          await axios.get("/api/auth/logout");
+        }
+        if (process.env.NODE_ENV === "production") {
+          await axios.get("https://backend.sweetsbykarla.net/api/auth/logout");
+        }
       }
 
       localStorage.clear();
@@ -128,13 +141,27 @@ export const logout = () => {
 export const getGoogleUserInfo = () => {
   return async (dispatch) => {
     try {
-      dispatch({ type: USER_LOGIN_REQUEST });
+      if (process.env.NODE_ENV === "development") {
+        dispatch({ type: USER_LOGIN_REQUEST });
 
-      const { data } = await axios.get("/api/auth/currentuser");
+        const { data } = await axios.get("/api/auth/currentuser");
 
-      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("userInfo", JSON.stringify(data));
+      }
+
+      if (process.env.NODE_ENV === "production") {
+        dispatch({ type: USER_LOGIN_REQUEST });
+
+        const { data } = await axios.get(
+          "https://backend.sweetsbykarla.net/api/auth/currentuser"
+        );
+
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+
+        localStorage.setItem("userInfo", JSON.stringify(data));
+      }
     } catch (error) {
       dispatch({
         type: USER_LOGIN_FAIL,
@@ -149,24 +176,46 @@ export const getGoogleUserInfo = () => {
 
 export const verify = (name, email, password, phone) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_VERIFICATION_LINK_REQUEST,
-    });
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_VERIFICATION_LINK_REQUEST,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const { data } = await axios.post(
-      "/api/users/verificationlink",
-      { name, email, password, phone },
-      config
-    );
-    dispatch({
-      type: USER_VERIFICATION_LINK_SUCCESS,
-      payload: data,
-    });
+      const { data } = await axios.post(
+        "/api/users/verificationlink",
+        { name, email, password, phone },
+        config
+      );
+      dispatch({
+        type: USER_VERIFICATION_LINK_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_VERIFICATION_LINK_REQUEST,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "https://backend.sweetsbykarla.net/api/users/verificationlink",
+        { name, email, password, phone },
+        config
+      );
+      dispatch({
+        type: USER_VERIFICATION_LINK_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: USER_VERIFICATION_LINK_FAIL,
@@ -180,29 +229,60 @@ export const verify = (name, email, password, phone) => async (dispatch) => {
 
 export const register = (token) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_REGISTER_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development ") {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const { data } = await axios.post("/api/users", { token }, config);
+      const { data } = await axios.post("/api/users", { token }, config);
 
-    dispatch({
-      type: USER_REGISTER_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
 
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "https://backend.sweetsbykarla.net/api/users",
+        { token },
+        config
+      );
+
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -216,26 +296,53 @@ export const register = (token) => async (dispatch) => {
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: USER_DETAILS_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_DETAILS_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get(`/api/users/${id}`, config);
+      const { data } = await axios.get(`/api/users/${id}`, config);
 
-    dispatch({
-      type: USER_DETAILS_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_DETAILS_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_DETAILS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/users/${id}`,
+        config
+      );
+
+      dispatch({
+        type: USER_DETAILS_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -253,26 +360,50 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
 export const forgotPassword = (email) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_FORGOT_PASSWORD_MAIL_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_FORGOT_PASSWORD_MAIL_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
-    const { data } = await axios.put(
-      "/api/users/forgot-password",
-      { email },
-      config
-    );
+      const { data } = await axios.put(
+        "/api/users/forgot-password",
+        { email },
+        config
+      );
 
-    dispatch({
-      type: USER_FORGOT_PASSWORD_MAIL_SUCCESS,
-      payload: data.message,
-    });
+      dispatch({
+        type: USER_FORGOT_PASSWORD_MAIL_SUCCESS,
+        payload: data.message,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_FORGOT_PASSWORD_MAIL_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        "https://backend.sweetsbykarla.net/api/users/forgot-password",
+        { email },
+        config
+      );
+
+      dispatch({
+        type: USER_FORGOT_PASSWORD_MAIL_SUCCESS,
+        payload: data.message,
+      });
+    }
   } catch (error) {
     dispatch({
       type: USER_FORGOT_PASSWORD_MAIL_FAIL,
@@ -286,26 +417,50 @@ export const forgotPassword = (email) => async (dispatch) => {
 
 export const resetPassword = (password, token) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_RESET_PASSWORD_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_RESET_PASSWORD_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
-    const { data } = await axios.put(
-      "/api/users/reset-password",
-      { newPass: password, resetLink: token },
-      config
-    );
+      const { data } = await axios.put(
+        "/api/users/reset-password",
+        { newPass: password, resetLink: token },
+        config
+      );
 
-    dispatch({
-      type: USER_RESET_PASSWORD_SUCCESS,
-      payload: data.message,
-    });
+      dispatch({
+        type: USER_RESET_PASSWORD_SUCCESS,
+        payload: data.message,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_RESET_PASSWORD_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        "https://backend.sweetsbykarla.net/api/users/reset-password",
+        { newPass: password, resetLink: token },
+        config
+      );
+
+      dispatch({
+        type: USER_RESET_PASSWORD_SUCCESS,
+        payload: data.message,
+      });
+    }
   } catch (error) {
     dispatch({
       type: USER_RESET_PASSWORD_FAIL,
@@ -319,32 +474,66 @@ export const resetPassword = (password, token) => async (dispatch) => {
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: USER_UPDATE_PROFILE_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_UPDATE_PROFILE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(`/api/users/profile`, user, config);
+      const { data } = await axios.put(`/api/users/profile`, user, config);
 
-    dispatch({
-      type: USER_UPDATE_PROFILE_SUCCESS,
-      payload: data,
-    });
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    });
-    localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data,
+      });
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_UPDATE_PROFILE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `https://backend.sweetsbykarla.net/api/users/profile`,
+        user,
+        config
+      );
+
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data,
+      });
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -362,26 +551,53 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
 export const listUsers = () => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: USER_LIST_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_LIST_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get(`/api/users`, config);
+      const { data } = await axios.get(`/api/users`, config);
 
-    dispatch({
-      type: USER_LIST_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_LIST_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_LIST_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/users`,
+        config
+      );
+
+      dispatch({
+        type: USER_LIST_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -399,23 +615,47 @@ export const listUsers = () => async (dispatch, getState) => {
 
 export const deleteUser = (id) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: USER_DELETE_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_DELETE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    await axios.delete(`/api/users/${id}`, config);
+      await axios.delete(`/api/users/${id}`, config);
 
-    dispatch({ type: USER_DELETE_SUCCESS });
+      dispatch({ type: USER_DELETE_SUCCESS });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_DELETE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(
+        `https://backend.sweetsbykarla.net/api/users/${id}`,
+        config
+      );
+
+      dispatch({ type: USER_DELETE_SUCCESS });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -433,28 +673,58 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: USER_UPDATE_REQUEST,
-    });
+    if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+      const { data } = await axios.put(`/api/users/${user._id}`, user, config);
 
-    dispatch({ type: USER_UPDATE_SUCCESS });
+      dispatch({ type: USER_UPDATE_SUCCESS });
 
-    dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 
-    dispatch({ type: USER_DETAILS_RESET });
+      dispatch({ type: USER_DETAILS_RESET });
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `https://backend.sweetsbykarla.net/api/users/${user._id}`,
+        user,
+        config
+      );
+
+      dispatch({ type: USER_UPDATE_SUCCESS });
+
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+
+      dispatch({ type: USER_DETAILS_RESET });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message

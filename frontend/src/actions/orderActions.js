@@ -39,22 +39,21 @@ import { logout } from "./userActions";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_CREATE_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_CREATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.post(`/api/orders`, order, config);
 
       dispatch({
@@ -65,7 +64,22 @@ export const createOrder = (order) => async (dispatch, getState) => {
         type: CART_CLEAR_ITEMS,
         payload: data,
       });
-    } else {
+      localStorage.removeItem("cartItems");
+    } else if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_CREATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.post(
         `https://backend.sweetsbykarla.net/api/orders`,
         order,
@@ -81,9 +95,8 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
         payload: data,
       });
+      localStorage.removeItem("cartItems");
     }
-
-    localStorage.removeItem("cartItems");
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -101,11 +114,10 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
 export const deleteOrder = (id) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_DELETE_REQUEST,
-    });
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_DELETE_REQUEST,
+      });
       const {
         userLogin: { userInfo },
       } = getState();
@@ -119,7 +131,10 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
       await axios.delete(`/api/orders/${id}`, config);
 
       dispatch({ type: ORDER_DELETE_SUCCESS });
-    } else {
+    } else if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_DELETE_REQUEST,
+      });
       const {
         userLogin: { userInfo },
       } = getState();
@@ -154,15 +169,14 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_DETAILS_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_DETAILS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -175,7 +189,14 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         type: ORDER_DETAILS_SUCCESS,
         payload: data,
       });
-    } else {
+    } else if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_DETAILS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -210,15 +231,14 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 // ORDER PACKED ACTION
 export const orderPacked = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_PACKED_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_PACKED_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -235,7 +255,16 @@ export const orderPacked = (order) => async (dispatch, getState) => {
         type: ORDER_PACKED_SUCCESS,
         payload: data,
       });
-    } else {
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_PACKED_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -267,21 +296,20 @@ export const orderPacked = (order) => async (dispatch, getState) => {
 // ORDER CANCEL ACTION
 export const orderCancelled = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_CANCEL_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_CANCEL_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `/api/orders/${order._id}/cancelled`,
         {},
@@ -292,7 +320,21 @@ export const orderCancelled = (order) => async (dispatch, getState) => {
         type: ORDER_CANCEL_SUCCESS,
         payload: data,
       });
-    } else {
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_CANCEL_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `https://backend.sweetsbykarla.net/api/orders/${order._id}/cancelled`,
         {},
@@ -318,21 +360,20 @@ export const orderCancelled = (order) => async (dispatch, getState) => {
 // ORDER DISPATCHED ACTION
 export const orderDispatched = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_DISPATCHED_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_DISPATCHED_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `/api/orders/${order._id}/dispatched`,
         {},
@@ -343,7 +384,21 @@ export const orderDispatched = (order) => async (dispatch, getState) => {
         type: ORDER_DISPATCHED_SUCCESS,
         payload: data,
       });
-    } else {
+    }
+    if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_DISPATCHED_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `https://backend.sweetsbykarla.net/api/orders/${order._id}/dispatched`,
         {},
@@ -368,21 +423,20 @@ export const orderDispatched = (order) => async (dispatch, getState) => {
 
 export const deliverOrder = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_DELIVER_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_DELIVER_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `/api/orders/${order._id}/deliver`,
         {},
@@ -395,6 +449,19 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
       });
     }
     if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_DELIVER_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `https://backend.sweetsbykarla.net/api/orders/${order._id}/deliver`,
         {},
@@ -464,21 +531,20 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
 
 export const orderStatus = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_STATUS_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_STATUS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `/api/orders/${order._id}/status`,
         {},
@@ -491,6 +557,19 @@ export const orderStatus = (order) => async (dispatch, getState) => {
       });
     }
     if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_STATUS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.put(
         `https://backend.sweetsbykarla.net/api/orders/${order._id}/status`,
         {},
@@ -519,21 +598,20 @@ export const orderStatus = (order) => async (dispatch, getState) => {
 
 export const listMyOrders = () => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_LIST_MY_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_LIST_MY_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.get(`/api/orders/myorders`, config);
 
       dispatch({
@@ -542,6 +620,19 @@ export const listMyOrders = () => async (dispatch, getState) => {
       });
     }
     if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_LIST_MY_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.get(
         `https://backend.sweetsbykarla.net/api/orders/myorders`,
         config
@@ -569,21 +660,20 @@ export const listMyOrders = () => async (dispatch, getState) => {
 
 export const listOrders = () => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_LIST_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
     if (process.env.NODE_ENV === "development") {
+      dispatch({
+        type: ORDER_LIST_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.get(`/api/orders`, config);
 
       dispatch({
@@ -592,6 +682,19 @@ export const listOrders = () => async (dispatch, getState) => {
       });
     }
     if (process.env.NODE_ENV === "production") {
+      dispatch({
+        type: ORDER_LIST_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
       const { data } = await axios.get(
         `https://backend.sweetsbykarla.net/api/orders`,
         config
