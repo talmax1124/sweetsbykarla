@@ -75,25 +75,6 @@ app.use("/api/auth", authRoutes);
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/build")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
-  );
-
-  // 404 error handler for backend requests
-  app.use((req, res, next) => {
-    res.status(404).send("Not Found");
-  });
-} else {
-  // Development mode
-  app.get("/", (req, res) => {
-    res.send("API is running....");
-    console.log("API is running....");
-  });
-}
-
 app.use(notFound);
 app.use(errorHandler);
 
