@@ -34,30 +34,39 @@ import {
 } from "../constants/productConstants";
 import { logout } from "./userActions";
 
-export const listProducts =
-  (keyword = "", pageNumber = "") =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: PRODUCT_LIST_REQUEST });
+export const listProducts = (keyword = "", pageNumber = "") => async (
+  dispatch
+) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_REQUEST });
 
+    if (process.env.NODE_ENV === "development") {
       const { data } = await axios.get(
         `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
-
       dispatch({
         type: PRODUCT_LIST_SUCCESS,
         payload: data,
       });
-    } catch (error) {
+    } else {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      );
       dispatch({
-        type: PRODUCT_LIST_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
       });
     }
-  };
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 //LIST PRODUCT BY CATEGORY
 
@@ -65,12 +74,22 @@ export const listProductByCategory = (category) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_CATEGORY_REQUEST });
 
-    const { data } = await axios.get(`/api/products/category/${category}`);
-
-    dispatch({
-      type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
-      payload: data,
-    });
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.get(`/api/products/category/${category}`);
+      dispatch({
+        type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products/category/${category}`
+      );
+      dispatch({
+        type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_CATEGORY_FAIL,
@@ -88,12 +107,22 @@ export const listProductByBrand = (brand) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_CATEGORY_REQUEST });
 
-    const { data } = await axios.get(`/api/products/brand/${brand}`);
-
-    dispatch({
-      type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
-      payload: data,
-    });
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.get(`/api/products/brand/${brand}`);
+      dispatch({
+        type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products/brand/${brand}`
+      );
+      dispatch({
+        type: PRODUCT_LIST_BY_CATEGORY_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_CATEGORY_FAIL,
@@ -109,12 +138,22 @@ export const listProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/products/${id}`);
-
-    dispatch({
-      type: PRODUCT_DETAILS_SUCCESS,
-      payload: data,
-    });
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.get(`/api/products/${id}`);
+      dispatch({
+        type: PRODUCT_DETAILS_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products/${id}`
+      );
+      dispatch({
+        type: PRODUCT_DETAILS_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
@@ -142,11 +181,23 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/products/${id}`, config);
+    if (process.env.NODE_ENV === "development") {
+      await axios.delete(`/api/products/${id}`, config);
 
-    dispatch({
-      type: PRODUCT_DELETE_SUCCESS,
-    });
+      dispatch({
+        type: PRODUCT_DELETE_SUCCESS,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      await axios.delete(
+        `https://backend.sweetsbykarla.net/api/products/${id}`,
+        config
+      );
+
+      dispatch({
+        type: PRODUCT_DELETE_SUCCESS,
+      });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -178,12 +229,24 @@ export const createProduct = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/products`, {}, config);
-
-    dispatch({
-      type: PRODUCT_CREATE_SUCCESS,
-      payload: data,
-    });
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.post(`/api/products`, {}, config);
+      dispatch({
+        type: PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.post(
+        `https://backend.sweetsbykarla.net/api/products`,
+        {},
+        config
+      );
+      dispatch({
+        type: PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -217,17 +280,32 @@ export const updateProduct = (product) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(
-      `/api/products/${product._id}`,
-      product,
-      config
-    );
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.put(
+        `/api/products/${product._id}`,
+        product,
+        config
+      );
 
-    dispatch({
-      type: PRODUCT_UPDATE_SUCCESS,
-      payload: data,
-    });
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+      dispatch({
+        type: PRODUCT_UPDATE_SUCCESS,
+        payload: data,
+      });
+      dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.put(
+        `https://backend.sweetsbykarla.net/api/products/${product._id}`,
+        product,
+        config
+      );
+
+      dispatch({
+        type: PRODUCT_UPDATE_SUCCESS,
+        payload: data,
+      });
+      dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    }
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -243,92 +321,135 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   }
 };
 
-export const createProductReview =
-  (productId, review) => async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: PRODUCT_CREATE_REVIEW_REQUEST,
-      });
+export const createProductReview = (productId, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REQUEST,
+    });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
+    if (process.env.NODE_ENV === "development") {
       await axios.post(`/api/products/${productId}/reviews`, review, config);
 
       dispatch({
         type: PRODUCT_CREATE_REVIEW_SUCCESS,
       });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      if (message === "Not authorized, token failed") {
-        dispatch(logout());
-      }
+    }
+    if (process.env.NODE_ENV === "production") {
+      await axios.post(
+        `https://backend.sweetsbykarla.net/api/products/${productId}/reviews`,
+        review,
+        config
+      );
+
       dispatch({
-        type: PRODUCT_CREATE_REVIEW_FAIL,
-        payload: message,
+        type: PRODUCT_CREATE_REVIEW_SUCCESS,
       });
     }
-  };
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload: message,
+    });
+  }
+};
 
-export const deleteProductReview =
-  (productId, review) => async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: PRODUCT_DELETE_REVIEW_REQUEST,
-      });
+export const deleteProductReview = (productId, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_DELETE_REVIEW_REQUEST,
+    });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-        data: review,
-      };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      data: review,
+    };
+
+    if (process.env.NODE_ENV === "development") {
       await axios.delete(`/api/products/${productId}/reviews`, config);
 
       dispatch({
         type: PRODUCT_DELETE_REVIEW_SUCCESS,
       });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      if (message === "Not authorized, token failed") {
-        dispatch(logout());
-      }
+    }
+    if (process.env.NODE_ENV === "production") {
+      await axios.delete(
+        `https://backend.sweetsbykarla.net/api/products/${productId}/reviews`,
+        config
+      );
+
       dispatch({
-        type: PRODUCT_DELETE_REVIEW_FAIL,
-        payload: message,
+        type: PRODUCT_DELETE_REVIEW_SUCCESS,
       });
     }
-  };
+    dispatch(listProductDetails(productId));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PRODUCT_DELETE_REVIEW_FAIL,
+      payload: message,
+    });
+  }
+};
 
 export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
 
-    const { data } = await axios.get(`/api/products/top`);
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.get(`/api/products/top`);
 
-    dispatch({
-      type: PRODUCT_TOP_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: PRODUCT_TOP_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products/top`
+      );
+
+      dispatch({
+        type: PRODUCT_TOP_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: PRODUCT_TOP_FAIL,
@@ -344,12 +465,24 @@ export const listLatestProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LATEST_REQUEST });
 
-    const { data } = await axios.get(`/api/products/latest`);
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.get(`/api/products/latest`);
 
-    dispatch({
-      type: PRODUCT_LATEST_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: PRODUCT_LATEST_SUCCESS,
+        payload: data,
+      });
+    }
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.get(
+        `https://backend.sweetsbykarla.net/api/products/latest`
+      );
+
+      dispatch({
+        type: PRODUCT_LATEST_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: PRODUCT_LATEST_FAIL,

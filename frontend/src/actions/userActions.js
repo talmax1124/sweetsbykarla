@@ -51,18 +51,35 @@ export const login = (email, password, phone) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      "/api/users/login",
-      { email, password, phone },
-      config
-    );
+    if (process.env.NODE_ENV === "development") {
+      const { data } = await axios.post(
+        "/api/users/login",
+        { email, password, phone },
+        config
+      );
 
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      const { data } = await axios.post(
+        "https://backend.sweetsbykarla.net/api/users/login",
+        { email, password, phone },
+        config
+      );
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
