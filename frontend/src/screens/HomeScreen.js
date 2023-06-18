@@ -10,8 +10,8 @@ import TopProducts from "../components/TopProducts";
 import OurStory from "../components/OurStory";
 import WhatWeOffer from "../components/WhatWeOffer";
 import MainArea from "../components/MainArea";
-import ReviewComponent from "../components/ReviewComponent";
 import SocialMediaCarousel from "../components/SocialMediaCarousel";
+import Testimonials from "../components/Testimonials";
 
 const HomeScreen = ({ match, history, location }) => {
   const keyword = match.params.keyword;
@@ -35,7 +35,7 @@ const HomeScreen = ({ match, history, location }) => {
             <WhatWeOffer />
             <MainArea />
             <TopProducts />
-            <ReviewComponent />
+            <Testimonials />
             <SocialMediaCarousel />
           </>
         ) : (
