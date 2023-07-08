@@ -17,6 +17,16 @@ const reviewSchema = mongoose.Schema(
   }
 );
 
+const productOptionsSchema = mongoose.Schema(
+  {
+    optionName: { type: String, required: false },
+    optionPrice: { type: Number, required: false },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const productSchema = mongoose.Schema(
   {
     user: {
@@ -33,16 +43,7 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     images: [String],
-    additionalimageone: {
-      type: String,
-    },
-    additionalimagetwo: {
-      type: String,
-    },
-    additionalimagethree: {
-      type: String,
-    },
-    digitalLink: {
+    image2: {
       type: String,
     },
     brand: {
@@ -53,13 +54,6 @@ const productSchema = mongoose.Schema(
       type: String,
     },
     description: {
-      type: String,
-    },
-    shippingReturnPolicy: {
-      type: String,
-    },
-
-    shortdescription: {
       type: String,
     },
     type: {
@@ -76,17 +70,6 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    productWeightLbs: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    productWeightOz: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-
     price: {
       type: Number,
       required: true,
@@ -100,12 +83,7 @@ const productSchema = mongoose.Schema(
     productVideo: {
       type: String,
     },
-    productTutorial: {
-      type: String,
-    },
-    productOptions: {
-      type: [String],
-    },
+    productOptions: [productOptionsSchema],
     productImportantInformation: {
       type: String,
     },
@@ -118,6 +96,11 @@ const productSchema = mongoose.Schema(
       type: Boolean,
       required: false,
       default: false,
+    },
+    // For the time of days it takes to make the product
+    productMakeTime: {
+      type: String,
+      required: false,
     },
   },
   {

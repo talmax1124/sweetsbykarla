@@ -45,7 +45,10 @@ const ProductEditScreen = ({ match, history }) => {
   const [type, setType] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const [productOptions, setProductOptions] = useState([]);
+  // Product Options with name + price option
+  const [productOptions, setProductOptions] = useState([
+    { name: "", price: 0 },
+  ]);
 
   const dispatch = useDispatch();
 
@@ -535,8 +538,8 @@ const ProductEditScreen = ({ match, history }) => {
 
                 <Form.Group controlId="productOptions">
                   <ProductOptions
-                    options={productOptions}
-                    onOptions={(options) => setProductOptions(options)}
+                    productOptions={productOptions}
+                    setProductOptions={setProductOptions}
                   />
                 </Form.Group>
 

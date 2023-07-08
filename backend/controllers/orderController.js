@@ -11,10 +11,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderNotes,
     itemsPrice,
     totalPrice,
-    shippingAddress,
     digitalLink,
-    shippingCost,
-    shippingTitle,
+    orderEstimatedCompletionDate,
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
@@ -32,6 +30,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       digitalLink,
       shippingCost,
       shippingTitle,
+      orderEstimatedCompletionDate,
     });
 
     const createdOrder = await order.save();
@@ -39,20 +38,33 @@ const addOrderItems = asyncHandler(async (req, res) => {
     res.status(201).json(createdOrder);
 
     order.forEach(async (orderItems) => {
-      const product = await Product.findById(orderItems.productId);
+      try {
+        const product = await Product.findById(orderItems.productId);
 
-      if (product.countInStock >= orderItems.qty) {
-        product.countInStock -= orderItems.qty;
-        await product.save();
-      } else if (product.countInStock < orderItems.qty) {
-        orderItems.qty = product.countInStock;
-        orderItems.message =
-          "One or more items unavailable, your order has been updated";
-        product.countInStock = 0;
-        await product.save();
-      } else if (!product.countInStock) {
+        if (!product) {
+          orderItems.qty = 0;
+          orderItems.message = "Product not found, your order has been updated";
+          return;
+        }
+
+        if (product.countInStock >= orderItems.qty) {
+          product.countInStock -= orderItems.qty;
+          await product.save();
+        } else if (product.countInStock < orderItems.qty) {
+          orderItems.qty = product.countInStock;
+          orderItems.message =
+            "One or more items unavailable, your order has been updated";
+          product.countInStock = 0;
+          await product.save();
+        } else if (!product.countInStock) {
+          orderItems.qty = 0;
+          orderItems.message = "Item out of stock, your order has been updated";
+        }
+      } catch (error) {
+        console.error(error);
         orderItems.qty = 0;
-        orderItems.message = "Item out of stock, your order has been updated";
+        orderItems.message =
+          "Error updating product, your order has been updated";
       }
     });
   }
@@ -234,6 +246,26 @@ const deleteOrder = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc   Create the Estimated Completion Date
+// @route   POST /api/orders/estimatedcompletiondate
+// @access  Private/Admin
+
+const createEstimatedCompletionDate = asyncHandler(async (req, res) => {
+  const { estimatedCompletionDate } = req.body;
+
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.estimatedCompletionDate = estimatedCompletionDate;
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order Not Found (ERROR)");
+  }
+});
+
 export {
   addOrderItems,
   getOrderById,
@@ -245,6 +277,7 @@ export {
   updateOrderToPacked,
   updateOrderToDispatched,
   cancelOrder,
+  createEstimatedCompletionDate,
   // updateOrderShipmentInformation,
   // updateOrderShipmentPaymentLink,
 };

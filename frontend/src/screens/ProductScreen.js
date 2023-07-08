@@ -29,6 +29,7 @@ import {
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 
 import { deleteProduct } from "../actions/productActions";
+// import MultiSelect from "../components/product/Multi-Select";
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
@@ -257,21 +258,29 @@ const ProductScreen = ({ history, match }) => {
                     )}
                   </>
                 )}
-                {/* {product.productOptions && (
-                <>
-                  <div className="flex justify-between items-center mt-3 mb-3">
-                    {product.productOptions.map((option) => {
-                      return (
-                        <>
-                          <p className="text-1xl px-3 py-1 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-md">
-                            {option}
-                          </p>
-                        </>
-                      );
-                    })}
-                  </div>
-                </>
-              )} */}
+
+                <Row>
+                  {/* <MultiSelect /> */}
+                  <h2 className="mb-2">Select Your Add Ons</h2>
+                  {product.productOptions && (
+                    <>
+                      <select
+                        size={4}
+                        className="bg-slate-100 text-black w-full rounded p-1"
+                      >
+                        {product.productOptions.map((option) => {
+                          return (
+                            <>
+                              <option value={option} className="">
+                                {option}
+                              </option>
+                            </>
+                          );
+                        })}
+                      </select>
+                    </>
+                  )}
+                </Row>
 
                 {product.countInStock > 0 && (
                   <Row className="flex items-center mt-3 mb-3">

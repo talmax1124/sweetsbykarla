@@ -15,6 +15,7 @@ const orderSchema = mongoose.Schema(
         price: { type: Number, required: true },
         countInStock: { type: Number, required: true },
         digitalLink: { type: String },
+
         product: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
@@ -22,6 +23,7 @@ const orderSchema = mongoose.Schema(
         },
       },
     ],
+    orderEstimatedCompletionDate: { type: String, required: false },
 
     orderNotes: {
       notes: { type: String },
@@ -47,14 +49,6 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    shippingAddress: {
-      line1: { type: String },
-      line2: { type: String },
-      city: { type: String },
-      state: { type: String },
-      postal_code: { type: String },
-      country: { type: String },
-    },
 
     paymentResult: {
       id: String,
@@ -62,19 +56,10 @@ const orderSchema = mongoose.Schema(
       update_time: String,
       email_address: String,
     },
-    shippingCost: {
-      type: Number,
-    },
-    shippingTitle: {
+    orderEstimatedCompletionDate: {
       type: String,
+      required: false,
     },
-
-    // shipmentNumber: {
-    //   type: String,
-    // },
-    // shipmentPaymentLink: {
-    //   type: String,
-    // },
     isDelivered: {
       type: Boolean,
       required: true,

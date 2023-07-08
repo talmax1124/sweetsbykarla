@@ -125,7 +125,7 @@ const createProduct = asyncHandler(async (req, res) => {
     type: "Physical",
     productWeightLbs: 0,
     productWeightOz: 0,
-    productOptions: ["Sample option"],
+    productOptions: [""],
     // colors: ["Sample color"],
   });
 

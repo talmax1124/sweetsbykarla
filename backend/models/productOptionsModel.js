@@ -2,18 +2,39 @@
 
 import mongoose from "mongoose";
 
-const CategoryOptionSchema = mongoose.Schema({
-  name: { type: String, required: true },
-});
+// Option Name and Price
 
-const IndependentOptionSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  options: [CategoryOptionSchema],
-});
+const productOptionsSchema = mongoose.Schema(
+  {
+    optionName: { type: String, required: false },
+    optionPrice: { type: Number, required: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const productOptionsModel = mongoose.model(
   "ProductOptions",
-  IndependentOptionSchema
+  productOptionsSchema
 );
 
 export default productOptionsModel;
+
+// import mongoose from "mongoose";
+
+// const CategoryOptionSchema = mongoose.Schema({
+//   name: { type: String, required: true },
+// });
+
+// const IndependentOptionSchema = mongoose.Schema({
+//   name: { type: String, required: true },
+//   options: [CategoryOptionSchema],
+// });
+
+// const productOptionsModel = mongoose.model(
+//   "ProductOptions",
+//   IndependentOptionSchema
+// );
+
+// export default productOptionsModel;
